@@ -1,0 +1,111 @@
+
+#Number 4
+import numpy as np
+
+#For odd numbers 
+x=np.arange(n)
+print (x[1::2])
+
+#For even numbers without the first and last values of the array
+x=np.arange(n)
+x=np.delete(x,x[-1], 0)
+x=np.delete(x,x[0], 0)
+print (x[1::2])
+
+
+#x=np.linspace(0,np.pi/2,n) #This is for n evenly spaced values 
+
+
+
+#Number Three
+
+import numpy as np
+import math
+
+x0=0
+
+x1=np.pi/2
+
+m=[10,30,100,300,1000,10000]	#value of 10000 was added to list to compare accuracy of n=10 using simpsons rule with n=10000 using this method
+
+for n in m:
+
+    x=np.linspace(x0,x1,n)
+
+    y=np.cos(x)
+
+    tot=y.sum()*((x1-x0)/n)
+    err=1-tot
+    a=math.log(err,n) #Question says err is proportional to n**a. Find a
+
+    print 'integral is ' + repr(tot) + ' with n=' + repr(n) + ','+ 'with error~'+repr(err) + 'giving a proportional to' +repr(a)
+
+#Thus we have the relation of err~n**(-1)
+
+#Problem five
+mydelts=[10,30,100,300,1000]
+
+import numpy as np
+
+def Simpson(f, x0, x1, n):
+     	h = (x1 - x0)/float(n) # need to cast 'n' as float in order to avoid
+        # integer division
+    	sum1 = 0
+    	for i in range(1, (n/2) + 1): #for odd i, we know this since n is even so n/2+1 is odd
+        	sum1 += f(x0 + (2*i - 1)*h) #2i-1 is an odd value so this is getting fodd
+    	sum2 = 0
+    	for i in range(1, n/2): # range must be ints: range() integer 
+            #end argument expected, got float.
+        	sum2 += f(x0 + 2*i*h)
+    	approx = (h/3.0)*(f(x0) + f(x1) + 4*sum1 + 2*sum2)
+    	return approx
+
+def f(x):
+    return np.cos(x)
+
+
+print "Simpson approximation of cos(x):"
+for n in mydelts:
+    error=1 - Simpson(f, x0, x1, n)
+    p=math.log(abs(error),n)
+    print 'integral is ' + repr(Simpson(f, x0, x1, n)) + ' with n=' + repr(n) + ','+ 'with error~'+repr(error) + 'giving a proportional to' +repr(p)
+
+#Thus we have the relation of err~n**(-4)
+
+#n=10 in the Simpsons rule is as accurate as n=10000 in the integral calculated in problem 3. This is expected since error is 10 000 times smaller in the integral computed using the sipsons rule 
+
+#Problem 6
+import matplotlib.pyplot as plt
+import numpy as np
+er=[]
+
+for n in mydelts:
+	x=np.linspace(x0,x1,n)
+	y=np.cos(x)
+	tot=y.sum()*((x1-x0)/n)
+	err=1-tot
+	er+=[err]
+ 
+errorr=[]
+for n in mydelts:
+    x=np.linspace(x0,x1,n)
+    error=abs(1 - Simpson(f, x0, x1, n))
+    errorr+=[error]
+
+ax=plt.gca()
+plt.plot(mydelts,er,'r',errorr,'g')
+ax.set_yscale('log')
+plt.xlabel("n")
+plt.ylabel("log(errors from two integration parts)")
+plt.draw()
+plt.show()
+
+#Bonus
+#B1: The function we are integrating is (e**-0.5(-x**2))/np.sqrt(2*np.pi) +1.
+#Integrating this over the range -20 to 20 gives 40 for the integral of 1dx 
+#plus one for the integral of the second term, using the integral of e**(-a(x**2))=np.sqrt(np.pi/a)
+#Thus the range from -20 to 20 gives a value of 41 for the integral.  
+#The integral from -25 to 15 gives a value of 40, which means the gaussian function was not integrated in this range.
+#Gaussian functions are even functions whose integration gives a correct value when the integration is carried out from -x to +x
+
+#B2: The gaussian function can be taylor expanded giving y=1-((x**2)/2)+(x**4)/8 
