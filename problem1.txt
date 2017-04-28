@@ -1,0 +1,7 @@
+Zahra Kader
+zahrakader@gmail.com
+My honours project is on pulsar timing and gravitational waves. 
+In this course I would like to learn more statistics. How can you calculate the mean, standard deviation. Can the chi squared
+test be carried out? 
+It would also be beneficial to learn to import data and use the data in python if you are aiming to fit the data to a model 
+that you created. 
